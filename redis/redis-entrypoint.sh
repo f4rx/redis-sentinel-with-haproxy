@@ -14,8 +14,8 @@ EOF
 
 redis-sentinel /etc/redis/sentinel.conf
 
-if [ "$IS_SLAVE" == true ]; then
-	redis-server --slaveof $MASTER_HOST 6379
+if [ "${IS_SLAVE}" == true ]; then
+  redis-server --slaveof ${MASTER_HOST} 6379 --slave-priority ${SLAVE_PRIORITY}
 else
-    redis-server
+  redis-server
 fi

@@ -1,8 +1,8 @@
-FROM haproxy:1.9.4-alpine
+FROM haproxy:2.0.1
+
+RUN apt update && apt install -y python-pip procps && pip install haproxytool
+RUN mkdir /var/lib/haproxy/
 
 COPY haproxy.cfg .
 
-RUN mkdir -p /etc/haproxy &&\
-    cp haproxy.cfg /etc/haproxy/haproxy.cfg
-
-CMD [ "haproxy", "-f", "/etc/haproxy/haproxy.cfg" ]
+CMD [ "haproxy", "-f", "/haproxy.cfg" ]

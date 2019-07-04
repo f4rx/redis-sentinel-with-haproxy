@@ -4,24 +4,15 @@ services:
   redis01:
     build: ./redis
     ports:
-      - 6379:6379
+      - 6380:6379
     networks:
       - host
+    environment:
+      - SLAVE_PRIORITY=1
     env_file:
       - './redis/env/master_variables.env'
 
   redis02:
-    build: ./redis
-    ports:
-      - 6380:6379
-    depends_on:
-      - redis01
-    networks:
-      - host
-    env_file:
-      - './redis/env/slave_variables.env'
-
-  redis03:
     build: ./redis
     ports:
       - 6381:6379
@@ -29,6 +20,21 @@ services:
       - redis01
     networks:
       - host
+    environment:
+      - SLAVE_PRIORITY=2
+    env_file:
+      - './redis/env/slave_variables.env'
+
+  redis03:
+    build: ./redis
+    ports:
+      - 6382:6379
+    depends_on:
+      - redis01
+    networks:
+      - host
+    environment:
+      - SLAVE_PRIORITY=3
     env_file:
       - './redis/env/slave_variables.env'
 
@@ -43,6 +49,7 @@ services:
     ports:
       - '9000:9000'
       - '8080:80'
+      - '6379:6379'
 
 networks:
   host:
